@@ -11,6 +11,8 @@
 
 \usepackage{hyperref}
 \usepackage{url}
+\usepackage{graphicx}
+
 
 
 \title{Formatting Instructions for TMLR \\Journal Submissions}
@@ -19,8 +21,8 @@
 % as long as the tmlr package is used without the [accepted] or [preprint] options.
 % Non-anonymous submissions will be rejected without review.
 
-\author{\name Student number: <Insert student number> \\
-      \addr GitHub repository: <Insert GitHub repository URL>
+\author{\name Student number: 22033917 \\
+      \addr GitHub repository: https://github.com/UCL-ELEC0136/10-final-assessment-xzzc666
       }
 
 % The \author macro works with any number of authors. Use \AND 
@@ -29,8 +31,8 @@
 \newcommand{\fix}{\marginpar{FIX}}
 \newcommand{\new}{\marginpar{NEW}}
 
-\def\month{MM}  % Insert correct month for camera-ready version
-\def\year{YYYY} % Insert correct year for camera-ready version
+\def\month{01}  % Insert correct month for camera-ready version
+\def\year{2026} % Insert correct year for camera-ready version
 
 
 \begin{document}
@@ -39,360 +41,144 @@
 \maketitle
 
 \begin{abstract}
-The abstract paragraph should be indented 1/2~inch on both left and
-right-hand margins. Use 10~point type, with a vertical spacing of 11~points.
-The word \textbf{\large Abstract} must be centered, in bold, and in point size 12. Two
-line spaces precede the abstract. The abstract must be limited to one
-paragraph.
+
 \end{abstract}
 
-\section{Submission of papers to TMLR}
+\section{Introduction}
 
-TMLR requires electronic submissions, processed by
-\url{https://openreview.net/}. See TMLR's website for more instructions.
+\section{System overview}
 
-If your paper is ultimately accepted, use option {\tt accepted} with the {\tt tmlr} 
-package to adjust the format to the camera ready requirements, as follows:
-\begin{center}  
-  {\tt {\textbackslash}usepackage[accepted]\{tmlr\}}. 
-\end{center}
-You also need to specify the month and year
-by defining variables {\tt month} and {\tt year}, which respectively
-should be a 2-digit and 4-digit number. To de-anonymize and remove mentions
-to TMLR (for example for posting to preprint servers), use the preprint option,
-as in {\tt {\textbackslash}usepackage[preprint]\{tmlr\}}. 
+\section{Data discovery and acquisition}
 
-Please read carefully the instructions below, and follow them
-faithfully.
+  \subsection{Data Sources and Usage Protocols}
+    This project uses \textbf{FRED} (Federal Reserve Economic Data) as the primary data source. 
+    \textbf{FRED} provides a large collection of authoritative macroeconomic and financial time--series data and supports programmatic access through a free API key.
 
-\subsection{Style}
+    According to the official \textit{FRED API Terms of Use} \cite{FRED API Terms of Use}, the free API may be used for academic research and non--commercial purposes. 
+    In this project, all retrieved data are used exclusively for model training and analysis. 
+    The original data are neither shared nor redistributed, and the usage fully complies with the relevant terms and conditions.
 
-Papers to be submitted to TMLR must be prepared according to the
-instructions presented here.
+    In addition, the official \textbf{FRED} website provides comprehensive API documentation\cite{FRED ALL API} to guide standardized access to economic and financial time--series data. 
+    Since the data acquisition process in this project is based on indicator (series) identifiers, the \textit{series observations} endpoint in the \textbf{FRED} API documentation is primarily referenced\cite{FRED SERIES API}. 
+    In the implementation, HTTP requests are sent using Python's \texttt{requests} library, with the parameters \texttt{api\_key}, \texttt{file\_type}, \texttt{series\_id}, \texttt{realtime\_start}, and \texttt{realtime\_end} used to control the type and time range of the retrieved time series. 
+    This design enables an automated and fully reproducible data collection pipeline.
 
-Authors are required to use the TMLR \LaTeX{} style files obtainable at the
-TMLR website. Please make sure you use the current files and
-not previous versions. Tweaking the style files may be grounds for rejection.
+  \subsection{Dataset Selection}
 
-\subsection{Retrieval of style files}
+    Table~\ref{tab:data_sources} summarises the data collected in this project and the rationale for selecting each data source. 
+    Due to space limitations, the full table is reported in \textit{Appendix}. 
 
-The style files for TMLR and other journal information are available online on
-the TMLR website.
-The file \verb+tmlr.pdf+ contains these
-instructions and illustrates the
-various formatting requirements your TMLR paper must satisfy.
-Submissions must be made using \LaTeX{} and the style files
-\verb+tmlr.sty+ and \verb+tmlr.bst+ (to be used with \LaTeX{}2e). The file
-\verb+tmlr.tex+ may be used as a ``shell'' for writing your paper. All you
-have to do is replace the author, title, abstract, and text of the paper with
-your own.
+    In total, \textbf{31 distinct time-series datasets} are incorporated in this study. 
+    These datasets are organised into multiple economically meaningful categories, including the \textit{target market}, \textit{auxiliary equity markets}, \textit{volatility and systemic risk}, \textit{credit spreads}, \textit{interest rates and term structure}, \textit{inflation}, \textit{liquidity and monetary conditions}, \textit{labour market}, \textit{economic activity}, \textit{housing market}, and \textit{consumption and sentiment}. 
+    This structured design enables the model to characterise market behaviour from complementary macro-financial perspectives rather than relying on a single information source.
 
-The formatting instructions contained in these style files are summarized in
-sections \ref{gen_inst}, \ref{headings}, and \ref{others} below.
+    The dataset spans the period from \textbf{January 1, 2015} to \textbf{December 31, 2025}, covering multiple market regimes and macroeconomic cycles.
 
-\section{General formatting instructions}
-\label{gen_inst}
+    In the following training stage shows that using a limited number of input variables led to pronounced overfitting, particularly under high-capacity model configurations. 
+    Therefore, a relatively large set of macroeconomic and financial indicators is intentionally adopted. 
 
-The text must be confined within a rectangle 6.5~inches wide and
-9~inches long. The left margin is 1~inch.
-Use 10~point type with a vertical spacing of 11~points. Computer Modern Bright is the
-preferred typeface throughout. Paragraphs are separated by 1/2~line space,
-with no indentation.
+    Although incorporating numerous input variables increases the dimensionality of the feature space, this challenge is addressed in later stages (\textit{Representation Learning, Feature Design, and Impact Analysis}) through Principal Component Analysis (PCA). 
+    PCA enables effective dimensionality reduction while preserving the dominant information structure, thereby mitigating the negative impact of dimensionality growth on model training and generalisation performance.
 
-Paper title is 17~point, in bold and left-aligned.
-All pages should start at 1~inch from the top of the page.
 
-Authors' names are
-set in boldface. Each name is placed above its corresponding
-address and has its corresponding email contact on the same line, in italic 
-and right aligned. The lead author's name is to be listed first, and
-the co-authors' names are set to follow vertically.
+  \subsection{Data storage and log writing}
+  Data storage is necessary because repeatedly retrieving identical historical data through APIs not only leads to access rate limitations and increased server load, but also significantly raises the time cost of data acquisition. 
+  During model training and multiple experimental runs, storing all data in a unified local database effectively avoids redundant requests, improves overall computational efficiency, and ensures data consistency as well as the reproducibility of experimental results.
 
-Please pay special attention to the instructions in section \ref{others}
-regarding figures, tables, acknowledgments, and references.
+  In this project, an SQLite database is adopted as the data storage solution. 
+  SQLite is a lightweight local database natively supported by Python, offering advantages such as offline operation, no account configuration, and simple deployment. 
+  Since the data in this project only need to be fully acquired once and stored for long-term use—without requirements for data sharing, high-concurrency access, or frequent write operations—a local database solution is sufficient to meet all project needs. 
+  Furthermore, SQL is selected instead of a NoSQL database to ensure strict temporal alignment across different macroeconomic and financial indicators, thereby avoiding data mismatch issues caused by flexible or non-uniform field structures. 
+  This design improves the structural stability and overall reliability of the dataset.
 
-\section{Headings: first level}
-\label{headings}
+  \begin{figure}[t]
+  \centering
+  \includegraphics[width=\linewidth]{figures/data_store.png}
+  \caption{Data acquisition and storage workflow}
+  \label{fig:data_pipeline}
+  \end{figure}
 
-First level headings are in bold,
-flush left and in point size 12. One line space before the first level
-heading and 1/2~line space after the first level heading.
 
-\subsection{Headings: second level}
+  The overall execution logic is illustrated in Figure~\ref{fig:data_pipeline}. 
+  A hyperparameter \texttt{REGENERATE} is introduced to control whether the raw feature data should be regenerated. 
+  When \texttt{REGENERATE} is set to \texttt{true} or when the database file does not exist, the program automatically detects missing data series and sends API requests only for the missing components. 
+  The complete dataset is then stored in the \texttt{data\_raw.db} database located in the \texttt{data} directory.
 
-Second level headings are in bold,
-flush left and in point size 10. One line space before the second level
-heading and 1/2~line space after the second level heading.
+  In addition, to facilitate runtime monitoring and the identification of potential errors, a \texttt{WriteLog} function is implemented. 
+  This function outputs progress information and error messages to the terminal while simultaneously recording them in the \texttt{data\_fetch.log} file under the \texttt{data} directory, thereby enhancing the traceability and debugging efficiency of the data collection pipeline.
 
-\subsubsection{Headings: third level}
 
-Third level headings are in bold,
-flush left and in point size 10. One line space before the third level
-heading and 1/2~line space after the third level heading.
+  
+    
 
-\section{Citations, figures, tables, references}
-\label{others}
 
-These instructions apply to everyone, regardless of the formatter being used.
+\section{Object model, data validation, and storage}
+\section{Dataset construction and sampling} 
+\section{Problem formalisation}
+\section{Representation learning, feature design and impact analysis}
+\section{Training and evaluation protocol}
+\section{References}
+\section{Appendix}
 
-\subsection{Citations within the text}
-
-Citations within the text should be based on the \texttt{natbib} package
-and include the authors' last names and year (with the ``et~al.'' construct
-for more than two authors). When the authors or the publication are
-included in the sentence, the citation should not be in parenthesis, using \verb|\citet{}| (as
-in ``See \citet{Hinton06} for more information.''). Otherwise, the citation
-should be in parenthesis using \verb|\citep{}| (as in ``Deep learning shows promise to make progress
-towards AI~\citep{Bengio+chapter2007}.'').
-
-The corresponding references are to be listed in alphabetical order of
-authors, in the \textbf{References} section. As to the format of the
-references themselves, any style is acceptable as long as it is used
-consistently.
-
-\subsection{Footnotes}
-
-Indicate footnotes with a number\footnote{Sample of the first footnote} in the
-text. Place the footnotes at the bottom of the page on which they appear.
-Precede the footnote with a horizontal rule of 2~inches.\footnote{Sample of the second footnote}
-
-\subsection{Figures}
-
-All artwork must be neat, clean, and legible. Lines should be dark
-enough for purposes of reproduction; art work should not be
-hand-drawn. The figure number and caption always appear after the
-figure. Place one line space before the figure caption, and one line
-space after the figure. The figure caption is lower case (except for
-first word and proper nouns); figures are numbered consecutively.
-
-Make sure the figure caption does not get separated from the figure.
-Leave sufficient space to avoid splitting the figure and figure caption.
-
-You may use color figures.
-However, it is best for the
-figure captions and the paper body to make sense if the paper is printed
-either in black/white or in color.
-\begin{figure}[h]
-\begin{center}
-%\framebox[4.0in]{$\;$}
-\fbox{\rule[-.5cm]{0cm}{4cm} \rule[-.5cm]{4cm}{0cm}}
-\end{center}
-\caption{Sample figure caption.}
-\end{figure}
-
-\subsection{Tables}
-
-All tables must be centered, neat, clean and legible. Do not use hand-drawn
-tables. The table number and title always appear before the table. See
-Table~\ref{sample-table}. Place one line space before the table title, one line space after the table
-title, and one line space after the table. The table title must be lower case
-(except for first word and proper nouns); tables are numbered consecutively.
 
 \begin{table}[t]
-\caption{Sample table title}
-\label{sample-table}
+\caption{Dataset selected for model training and evaluation.}
+\label{tab:data_sources}
 \begin{center}
-\begin{tabular}{ll}
-\multicolumn{1}{c}{\bf PART}  &\multicolumn{1}{c}{\bf DESCRIPTION}
+\begin{tabular}{p{3.4cm} p{4.8cm} p{6.2cm}}
+\multicolumn{1}{c}{\bf CATEGORY} &
+\multicolumn{1}{c}{\bf INDICATORS} &
+\multicolumn{1}{c}{\bf REASON}
 \\ \hline \\
-Dendrite         &Input terminal \\
-Axon             &Output terminal \\
-Soma             &Cell body (contains cell nucleus) \\
+
+Target market
+& SP500
+& Serves as the prediction target, providing the reference equity dynamics for supervised learning \\[6pt]
+
+Auxiliary equity markets
+& DJIA, NASDAQCOM
+& Capture cross-market co-movement and sectoral divergence that may provide contextual signals for SP500 price dynamics \\[6pt]
+
+Volatility and systemic risk
+& VIXCLS, TEDRATE, STLFSI4
+& Provide forward-looking information on market uncertainty, which may influence risk premia and short-term SP500 fluctuations \\[6pt]
+
+Credit spreads
+& BAMLH0A0HYM2, BAMLC0A0CM, BAMLC0A1CAAA, BAMLC0A4CBBB
+& Reflect changes in financing conditions and investor risk appetite that can affect equity valuation and market drawdowns \\[6pt]
+
+Interest rates and term structure
+& GS3M, GS2, GS10, GS30, T10Y2Y, T10Y3M
+& Encode monetary policy stance and yield curve expectations that influence discount rates applied to SP500 constituents \\[6pt]
+
+Inflation
+& CPIAUCSL, CPILFESL, PCEPI
+& Capture inflation dynamics that shape policy expectations and indirectly impact equity valuation levels \\[6pt]
+
+Liquidity and monetary conditions
+& M2SL, WALCL
+& Represent liquidity expansion or contraction that may amplify or suppress SP500 market momentum \\[6pt]
+
+Labour market
+& UNRATE, PAYEMS
+& Indicate employment conditions affecting household income, consumption capacity, and earnings expectations of SP500 firms \\[6pt]
+
+Economic activity
+& INDPRO, TCU, DGORDER
+& Describe real economic momentum that may influence corporate profitability and medium-term equity trends \\[6pt]
+
+Housing market
+& CSUSHPISA, HOUST, PERMIT
+& Reflect interest-rate-sensitive economic sectors that often respond early to policy shifts impacting broader equity markets \\[6pt]
+
+Consumption and sentiment
+& UMCSENT, RSAFS
+& Provide behavioural signals of household expectations that may affect equity demand and short-term market sentiment \\
+
 \end{tabular}
 \end{center}
 \end{table}
 
-\section{Default Notation}
 
-In an attempt to encourage standardized notation, we have included the
-notation file from the textbook, \textit{Deep Learning}
-\cite{goodfellow2016deep} available at
-\url{https://github.com/goodfeli/dlbook_notation/}.  Use of this style
-is not required and can be disabled by commenting out
-\texttt{math\_commands.tex}.
-
-
-\centerline{\bf Numbers and Arrays}
-\bgroup
-\def\arraystretch{1.5}
-\begin{tabular}{p{1in}p{3.25in}}
-$\displaystyle a$ & A scalar (integer or real)\\
-$\displaystyle \va$ & A vector\\
-$\displaystyle \mA$ & A matrix\\
-$\displaystyle \tA$ & A tensor\\
-$\displaystyle \mI_n$ & Identity matrix with $n$ rows and $n$ columns\\
-$\displaystyle \mI$ & Identity matrix with dimensionality implied by context\\
-$\displaystyle \ve^{(i)}$ & Standard basis vector $[0,\dots,0,1,0,\dots,0]$ with a 1 at position $i$\\
-$\displaystyle \text{diag}(\va)$ & A square, diagonal matrix with diagonal entries given by $\va$\\
-$\displaystyle \ra$ & A scalar random variable\\
-$\displaystyle \rva$ & A vector-valued random variable\\
-$\displaystyle \rmA$ & A matrix-valued random variable\\
-\end{tabular}
-\egroup
-\vspace{0.25cm}
-
-\centerline{\bf Sets and Graphs}
-\bgroup
-\def\arraystretch{1.5}
-
-\begin{tabular}{p{1.25in}p{3.25in}}
-$\displaystyle \sA$ & A set\\
-$\displaystyle \R$ & The set of real numbers \\
-$\displaystyle \{0, 1\}$ & The set containing 0 and 1 \\
-$\displaystyle \{0, 1, \dots, n \}$ & The set of all integers between $0$ and $n$\\
-$\displaystyle [a, b]$ & The real interval including $a$ and $b$\\
-$\displaystyle (a, b]$ & The real interval excluding $a$ but including $b$\\
-$\displaystyle \sA \backslash \sB$ & Set subtraction, i.e., the set containing the elements of $\sA$ that are not in $\sB$\\
-$\displaystyle \gG$ & A graph\\
-$\displaystyle \parents_\gG(\ervx_i)$ & The parents of $\ervx_i$ in $\gG$
-\end{tabular}
-\vspace{0.25cm}
-
-
-\centerline{\bf Indexing}
-\bgroup
-\def\arraystretch{1.5}
-
-\begin{tabular}{p{1.25in}p{3.25in}}
-$\displaystyle \eva_i$ & Element $i$ of vector $\va$, with indexing starting at 1 \\
-$\displaystyle \eva_{-i}$ & All elements of vector $\va$ except for element $i$ \\
-$\displaystyle \emA_{i,j}$ & Element $i, j$ of matrix $\mA$ \\
-$\displaystyle \mA_{i, :}$ & Row $i$ of matrix $\mA$ \\
-$\displaystyle \mA_{:, i}$ & Column $i$ of matrix $\mA$ \\
-$\displaystyle \etA_{i, j, k}$ & Element $(i, j, k)$ of a 3-D tensor $\tA$\\
-$\displaystyle \tA_{:, :, i}$ & 2-D slice of a 3-D tensor\\
-$\displaystyle \erva_i$ & Element $i$ of the random vector $\rva$ \\
-\end{tabular}
-\egroup
-\vspace{0.25cm}
-
-
-\centerline{\bf Calculus}
-\bgroup
-\def\arraystretch{1.5}
-\begin{tabular}{p{1.25in}p{3.25in}}
-% NOTE: the [2ex] on the next line adds extra height to that row of the table.
-% Without that command, the fraction on the first line is too tall and collides
-% with the fraction on the second line.
-$\displaystyle\frac{d y} {d x}$ & Derivative of $y$ with respect to $x$\\ [2ex]
-$\displaystyle \frac{\partial y} {\partial x} $ & Partial derivative of $y$ with respect to $x$ \\
-$\displaystyle \nabla_\vx y $ & Gradient of $y$ with respect to $\vx$ \\
-$\displaystyle \nabla_\mX y $ & Matrix derivatives of $y$ with respect to $\mX$ \\
-$\displaystyle \nabla_\tX y $ & Tensor containing derivatives of $y$ with respect to $\tX$ \\
-$\displaystyle \frac{\partial f}{\partial \vx} $ & Jacobian matrix $\mJ \in \R^{m\times n}$ of $f: \R^n \rightarrow \R^m$\\
-$\displaystyle \nabla_\vx^2 f(\vx)\text{ or }\mH( f)(\vx)$ & The Hessian matrix of $f$ at input point $\vx$\\
-$\displaystyle \int f(\vx) d\vx $ & Definite integral over the entire domain of $\vx$ \\
-$\displaystyle \int_\sS f(\vx) d\vx$ & Definite integral with respect to $\vx$ over the set $\sS$ \\
-\end{tabular}
-\egroup
-\vspace{0.25cm}
-
-\centerline{\bf Probability and Information Theory}
-\bgroup
-\def\arraystretch{1.5}
-\begin{tabular}{p{1.25in}p{3.25in}}
-$\displaystyle P(\ra)$ & A probability distribution over a discrete variable\\
-$\displaystyle p(\ra)$ & A probability distribution over a continuous variable, or over
-a variable whose type has not been specified\\
-$\displaystyle \ra \sim P$ & Random variable $\ra$ has distribution $P$\\% so thing on left of \sim should always be a random variable, with name beginning with \r
-$\displaystyle  \E_{\rx\sim P} [ f(x) ]\text{ or } \E f(x)$ & Expectation of $f(x)$ with respect to $P(\rx)$ \\
-$\displaystyle \Var(f(x)) $ &  Variance of $f(x)$ under $P(\rx)$ \\
-$\displaystyle \Cov(f(x),g(x)) $ & Covariance of $f(x)$ and $g(x)$ under $P(\rx)$\\
-$\displaystyle H(\rx) $ & Shannon entropy of the random variable $\rx$\\
-$\displaystyle \KL ( P \Vert Q ) $ & Kullback-Leibler divergence of P and Q \\
-$\displaystyle \mathcal{N} ( \vx ; \vmu , \mSigma)$ & Gaussian distribution %
-over $\vx$ with mean $\vmu$ and covariance $\mSigma$ \\
-\end{tabular}
-\egroup
-\vspace{0.25cm}
-
-\centerline{\bf Functions}
-\bgroup
-\def\arraystretch{1.5}
-\begin{tabular}{p{1.25in}p{3.25in}}
-$\displaystyle f: \sA \rightarrow \sB$ & The function $f$ with domain $\sA$ and range $\sB$\\
-$\displaystyle f \circ g $ & Composition of the functions $f$ and $g$ \\
-  $\displaystyle f(\vx ; \vtheta) $ & A function of $\vx$ parametrized by $\vtheta$.
-  (Sometimes we write $f(\vx)$ and omit the argument $\vtheta$ to lighten notation) \\
-$\displaystyle \log x$ & Natural logarithm of $x$ \\
-$\displaystyle \sigma(x)$ & Logistic sigmoid, $\displaystyle \frac{1} {1 + \exp(-x)}$ \\
-$\displaystyle \zeta(x)$ & Softplus, $\log(1 + \exp(x))$ \\
-$\displaystyle || \vx ||_p $ & $\normlp$ norm of $\vx$ \\
-$\displaystyle || \vx || $ & $\normltwo$ norm of $\vx$ \\
-$\displaystyle x^+$ & Positive part of $x$, i.e., $\max(0,x)$\\
-$\displaystyle \1_\mathrm{condition}$ & is 1 if the condition is true, 0 otherwise\\
-\end{tabular}
-\egroup
-\vspace{0.25cm}
-
-
-
-\section{Final instructions}
-Do not change any aspects of the formatting parameters in the style files.
-In particular, do not modify the width or length of the rectangle the text
-should fit into, and do not change font sizes (except perhaps in the
-\textbf{References} section; see below). Please note that pages should be
-numbered.
-
-\section{Preparing PostScript or PDF files}
-
-Please prepare PostScript or PDF files with paper size ``US Letter'', and
-not, for example, ``A4''. The -t
-letter option on dvips will produce US Letter files.
-
-Consider directly generating PDF files using \verb+pdflatex+
-(especially if you are a MiKTeX user).
-PDF figures must be substituted for EPS figures, however.
-
-Otherwise, please generate your PostScript and PDF files with the following commands:
-\begin{verbatim}
-dvips mypaper.dvi -t letter -Ppdf -G0 -o mypaper.ps
-ps2pdf mypaper.ps mypaper.pdf
-\end{verbatim}
-
-\subsection{Margins in LaTeX}
-
-Most of the margin problems come from figures positioned by hand using
-\verb+\special+ or other commands. We suggest using the command
-\verb+\includegraphics+
-from the graphicx package. Always specify the figure width as a multiple of
-the line width as in the example below using .eps graphics
-\begin{verbatim}
-   \usepackage[dvips]{graphicx} ...
-   \includegraphics[width=0.8\linewidth]{myfile.eps}
-\end{verbatim}
-or % Apr 2009 addition
-\begin{verbatim}
-   \usepackage[pdftex]{graphicx} ...
-   \includegraphics[width=0.8\linewidth]{myfile.pdf}
-\end{verbatim}
-for .pdf graphics.
-See section~4.4 in the graphics bundle documentation (\url{http://www.ctan.org/tex-archive/macros/latex/required/graphics/grfguide.ps})
-
-A number of width problems arise when LaTeX cannot properly hyphenate a
-line. Please give LaTeX hyphenation hints using the \verb+\-+ command.
-
-\subsubsection*{Broader Impact Statement}
-In this optional section, TMLR encourages authors to discuss possible repercussions of their work,
-notably any potential negative impact that a user of this research should be aware of. 
-Authors should consult the TMLR Ethics Guidelines available on the TMLR website
-for guidance on how to approach this subject.
-
-\subsubsection*{Author Contributions}
-If you'd like to, you may include a section for author contributions as is done
-in many journals. This is optional and at the discretion of the authors. Only add
-this information once your submission is accepted and deanonymized. 
-
-\subsubsection*{Acknowledgments}
-Use unnumbered third level headings for the acknowledgments. All
-acknowledgments, including those to funding agencies, go at the end of the paper.
-Only add this information once your submission is accepted and deanonymized. 
-
-\bibliography{main}
-\bibliographystyle{tmlr}
-
-\appendix
-\section{Appendix}
-You may include other additional sections here.
 
 \end{document}

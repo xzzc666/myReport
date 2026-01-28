@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (MiKTeX 25.4) (preloaded format=pdflatex 2025.10.29)  27 JAN 2026 22:22
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (MiKTeX 25.4) (preloaded format=pdflatex 2025.10.29)  28 JAN 2026 09:09
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -289,8 +289,21 @@ Package: uniquecounter 2019/12/15 v1.4 Provide unlimited unique counter (HO)
 Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 284.
 )
 \Hy@SectionHShift=\skip69
+) (C:\Users\dongz\AppData\Local\Programs\MiKTeX\tex/latex/graphics\graphicx.sty
+Package: graphicx 2024/12/31 v1.2e Enhanced LaTeX Graphics (DPC,SPQR)
+ (C:\Users\dongz\AppData\Local\Programs\MiKTeX\tex/latex/graphics\graphics.sty
+Package: graphics 2024/08/06 v1.4g Standard LaTeX Graphics (DPC,SPQR)
+ (C:\Users\dongz\AppData\Local\Programs\MiKTeX\tex/latex/graphics\trig.sty
+Package: trig 2023/12/02 v1.11 sin cos tan (DPC)
+) (C:\Users\dongz\AppData\Local\Programs\MiKTeX\tex/latex/graphics-cfg\graphics.cfg
+File: graphics.cfg 2016/06/04 v1.11 sample graphics configuration
 )
-LaTeX Font Info:    Trying to load font information for T1+lmr on input line 36.
+Package graphics Info: Driver file: pdftex.def on input line 106.
+)
+\Gin@req@height=\dimen164
+\Gin@req@width=\dimen165
+)
+LaTeX Font Info:    Trying to load font information for T1+lmr on input line 38.
  (C:\Users\dongz\AppData\Local\Programs\MiKTeX\tex/latex/lm\t1lmr.fd
 File: t1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 ) (C:\Users\dongz\AppData\Local\Programs\MiKTeX\tex/latex/l3backend\l3backend-pdftex.def
@@ -299,149 +312,211 @@ File: l3backend-pdftex.def 2025-10-09 L3 backend support: PDF output (pdfTeX)
 ) (main.aux)
 \openout1 = `main.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 36.
-LaTeX Font Info:    ... okay on input line 36.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 36.
-LaTeX Font Info:    ... okay on input line 36.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 36.
-LaTeX Font Info:    ... okay on input line 36.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 36.
-LaTeX Font Info:    ... okay on input line 36.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 36.
-LaTeX Font Info:    ... okay on input line 36.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 36.
-LaTeX Font Info:    ... okay on input line 36.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 36.
-LaTeX Font Info:    ... okay on input line 36.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 36.
-LaTeX Font Info:    ... okay on input line 36.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 36.
-LaTeX Font Info:    ... okay on input line 36.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 38.
+LaTeX Font Info:    ... okay on input line 38.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 38.
+LaTeX Font Info:    ... okay on input line 38.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 38.
+LaTeX Font Info:    ... okay on input line 38.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 38.
+LaTeX Font Info:    ... okay on input line 38.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 38.
+LaTeX Font Info:    ... okay on input line 38.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 38.
+LaTeX Font Info:    ... okay on input line 38.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 38.
+LaTeX Font Info:    ... okay on input line 38.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 38.
+LaTeX Font Info:    ... okay on input line 38.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 38.
+LaTeX Font Info:    ... okay on input line 38.
  (C:\Users\dongz\AppData\Local\Programs\MiKTeX\tex/context/base/mkii\supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count309
-\scratchdimen=\dimen164
+\scratchdimen=\dimen166
 \scratchbox=\box55
 \nofMPsegments=\count310
 \nofMParguments=\count311
 \everyMPshowfont=\toks23
 \MPscratchCnt=\count312
-\MPscratchDim=\dimen165
+\MPscratchDim=\dimen167
 \MPnumerator=\count313
 \makeMPintoPDFobject=\count314
 \everyMPtoPDFconversion=\toks24
-)
-Package hyperref Info: Link coloring OFF on input line 36.
+) (C:\Users\dongz\AppData\Local\Programs\MiKTeX\tex/latex/epstopdf-pkg\epstopdf-base.sty
+Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
+Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 485.
+ (C:\Users\dongz\AppData\Local\Programs\MiKTeX\tex/latex/00miktex\epstopdf-sys.cfg
+File: epstopdf-sys.cfg 2021/03/18 v2.0 Configuration of epstopdf for MiKTeX
+))
+Package hyperref Info: Link coloring OFF on input line 38.
  (main.out) (main.out)
 \@outlinefile=\write3
 \openout3 = `main.out'.
 
-LaTeX Font Info:    Trying to load font information for T1+lmss on input line 40.
+LaTeX Font Info:    Trying to load font information for T1+lmss on input line 42.
  (C:\Users\dongz\AppData\Local\Programs\MiKTeX\tex/latex/lm\t1lmss.fd
 File: t1lmss.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
-LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 52.
- (C:\Users\dongz\AppData\Local\Programs\MiKTeX\tex/latex/lm\t1lmtt.fd
+
+Package natbib Warning: Citation `FRED API Terms of Use' on page 1 undefined on input line 57.
+
+
+Package natbib Warning: Citation `FRED ALL API' on page 1 undefined on input line 61.
+
+
+Package natbib Warning: Citation `FRED SERIES API' on page 1 undefined on input line 62.
+
+LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 63.
+(C:\Users\dongz\AppData\Local\Programs\MiKTeX\tex/latex/lm\t1lmtt.fd
 File: t1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
-)
-LaTeX Font Info:    Trying to load font information for OT1+lmr on input line 52.
- (C:\Users\dongz\AppData\Local\Programs\MiKTeX\tex/latex/lm\ot1lmr.fd
-File: ot1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
-)
-LaTeX Font Info:    Trying to load font information for OML+lmm on input line 52.
- (C:\Users\dongz\AppData\Local\Programs\MiKTeX\tex/latex/lm\omllmm.fd
-File: omllmm.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
-)
-LaTeX Font Info:    Trying to load font information for OMS+lmsy on input line 52.
- (C:\Users\dongz\AppData\Local\Programs\MiKTeX\tex/latex/lm\omslmsy.fd
-File: omslmsy.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
-)
-LaTeX Font Info:    Trying to load font information for OMX+lmex on input line 52.
- (C:\Users\dongz\AppData\Local\Programs\MiKTeX\tex/latex/lm\omxlmex.fd
-File: omxlmex.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
-)
-LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <10> on input line 52.
-LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <7> on input line 52.
-LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <5> on input line 52.
-LaTeX Font Info:    Trying to load font information for U+msa on input line 52.
- (C:\Users\dongz\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\umsa.fd
-File: umsa.fd 2013/01/14 v3.01 AMS symbols A
-)
-LaTeX Font Info:    Trying to load font information for U+msb on input line 52.
- (C:\Users\dongz\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\umsb.fd
-File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
 
 [1
 
 {C:/Users/dongz/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map}{C:/Users/dongz/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/lm/lm-ec.enc}]
-
-Package natbib Warning: Citation `Hinton06' on page 2 undefined on input line 144.
-
-
-Package natbib Warning: Citation `Bengio+chapter2007' on page 2 undefined on input line 146.
-
+<figures/data_store.png, id=68, 1324.19719pt x 185.19188pt>
+File: figures/data_store.png Graphic file (type png)
+<use figures/data_store.png>
+Package pdftex.def Info: figures/data_store.png  used on input line 96.
+(pdftex.def)             Requested size: 469.75499pt x 65.6941pt.
+LaTeX Font Info:    Trying to load font information for OT1+lmr on input line 128.
+ (C:\Users\dongz\AppData\Local\Programs\MiKTeX\tex/latex/lm\ot1lmr.fd
+File: ot1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
+)
+LaTeX Font Info:    Trying to load font information for OML+lmm on input line 128.
+ (C:\Users\dongz\AppData\Local\Programs\MiKTeX\tex/latex/lm\omllmm.fd
+File: omllmm.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
+)
+LaTeX Font Info:    Trying to load font information for OMS+lmsy on input line 128.
+ (C:\Users\dongz\AppData\Local\Programs\MiKTeX\tex/latex/lm\omslmsy.fd
+File: omslmsy.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
+)
+LaTeX Font Info:    Trying to load font information for OMX+lmex on input line 128.
+ (C:\Users\dongz\AppData\Local\Programs\MiKTeX\tex/latex/lm\omxlmex.fd
+File: omxlmex.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
+)
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <8> on input line 155.
+(Font)              <10> on input line 128.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <6> on input line 155.
+(Font)              <7> on input line 128.
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <5> on input line 128.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 128.
+ (C:\Users\dongz\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\umsa.fd
+File: umsa.fd 2013/01/14 v3.01 AMS symbols A
+)
+LaTeX Font Info:    Trying to load font information for U+msb on input line 128.
+ (C:\Users\dongz\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\umsb.fd
+File: umsb.fd 2013/01/14 v3.01 AMS symbols B
+)
+Underfull \hbox (badness 1173) in paragraph at lines 140--140
+\T1/lmr/m/n/10 sec-toral di-ver-gence that may pro-vide
+ []
 
 
-[2]
+Underfull \hbox (badness 7433) in paragraph at lines 140--140
+\T1/lmr/m/n/10 con-tex-tual sig-nals for SP500 price
+ []
 
-Package natbib Warning: Citation `goodfellow2016deep' on page 3 undefined on input line 209.
+
+Underfull \hbox (badness 10000) in paragraph at lines 142--143
+[]\T1/lmr/m/n/10 Volatility and sys-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 143--144
+[]\T1/lmr/m/n/10 VIXCLS, TEDRATE,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 147--148
+[]\T1/lmr/m/n/10 BAMLH0A0HYM2,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 147--148
+\T1/lmr/m/n/10 BAMLC0A0CM,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 147--148
+\T1/lmr/m/n/10 BAMLC0A1CAAA,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 150--151
+[]\T1/lmr/m/n/10 Interest rates and
+ []
+
+
+Underfull \hbox (badness 5878) in paragraph at lines 151--152
+[]\T1/lmr/m/n/10 GS3M, GS2, GS10, GS30,
+ []
+
+
+Underfull \hbox (badness 2726) in paragraph at lines 152--152
+[]\T1/lmr/m/n/10 Encode mon-e-tary pol-icy stance and
+ []
+
+
+Underfull \hbox (badness 4242) in paragraph at lines 152--152
+\T1/lmr/m/n/10 yield curve ex-pec-ta-tions that in-flu-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 155--156
+[]\T1/lmr/m/n/10 CPIAUCSL, CPIL-FESL,
+ []
+
+
+Underfull \hbox (badness 1107) in paragraph at lines 158--159
+[]\T1/lmr/m/n/10 Liquidity and mon-e-
+ []
+
+
+Underfull \hbox (badness 2111) in paragraph at lines 164--164
+\T1/lmr/m/n/10 pac-ity, and earn-ings ex-pec-ta-tions of
+ []
+
+
+Underfull \hbox (badness 1221) in paragraph at lines 171--172
+[]\T1/lmr/m/n/10 CSUSHPISA, HOUST, PER-
+ []
 
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
 
 
-[3]
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
-
-
-[4{C:/Users/dongz/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/lm/lm-mathit.enc}{C:/Users/dongz/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/lm/lm-rm.enc}{C:/Users/dongz/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/lm/lm-mathsy.enc}]
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
-
-
-[5{C:/Users/dongz/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/lm/lm-mathex.enc}]
-No file main.bbl.
+[2 <./figures/data_store.png>]
 
 Package natbib Warning: There were undefined citations.
 
 
 
-[6]
+[3]
 
-[7] (main.aux)
+[4] (main.aux)
  ***********
 LaTeX2e <2025-06-01> patch level 1
 L3 programming layer <2025-10-09>
  ***********
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: 6FCE67C2F42B0F60F781BDA31225112F;2603.
- )
-(\end occurred inside a group at level 1)
-
-### simple group (level 1) entered at line 235 ({)
-### bottom level 
+(rerunfilecheck)             Checksum: 939B75E599D4E4E9E9F42C3CFFC3EC3E;2394.
+ ) 
 Here is how much of TeX's memory you used:
- 11025 strings out of 468080
- 162382 string characters out of 5425771
- 590365 words of memory out of 5000000
- 39490 multiletter control sequences out of 15000+600000
- 733783 words of font info for 105 fonts, out of 8000000 for 9000
+ 11329 strings out of 468080
+ 168072 string characters out of 5425771
+ 592765 words of memory out of 5000000
+ 39805 multiletter control sequences out of 15000+600000
+ 692665 words of font info for 80 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 75i,17n,79p,327b,521s stack positions out of 10000i,1000n,20000p,200000b,200000s
-<C:/Users/dongz/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmbx10.pfb><C:/Users/dongz/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmbx12.pfb><C:/Users/dongz/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmex10.pfb><C:/Users/dongz/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmmi10.pfb><C:/Users/dongz/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmmi7.pfb><C:/Users/dongz/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmmib10.pfb><C:/Users/dongz/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmmib7.pfb><C:/Users/dongz/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr10.pfb><C:/Users/dongz/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr6.pfb><C:/Users/dongz/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr7.pfb><C:/Users/dongz/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr8.pfb><C:/Users/dongz/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmri10.pfb><C:/Users/dongz/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmri9.pfb><C:/Users/dongz/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmssbx10.pfb><C:/Users/dongz/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmsso10.pfb><C:/Users/dongz/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmsy10.pfb><C:/Users/dongz/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmsy7.pfb><C:/Users/dongz/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmtt10.pfb><C:/Users/dongz/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/symbols/msbm10.pfb><C:/Users/dongz/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/symbols/msbm7.pfb>
-Output written on main.pdf (7 pages, 349164 bytes).
+ 75i,12n,79p,519b,484s stack positions out of 10000i,1000n,20000p,200000b,200000s
+<C:/Users/dongz/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmbx10.pfb><C:/Users/dongz/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr10.pfb><C:/Users/dongz/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmri10.pfb><C:/Users/dongz/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmri9.pfb><C:/Users/dongz/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmssbx10.pfb><C:/Users/dongz/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmtt10.pfb>
+Output written on main.pdf (4 pages, 200122 bytes).
 PDF statistics:
- 244 PDF objects out of 1000 (max. 8388607)
- 32 named destinations out of 1000 (max. 500000)
- 137 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 118 PDF objects out of 1000 (max. 8388607)
+ 20 named destinations out of 1000 (max. 500000)
+ 110 words of extra memory for PDF output out of 10000 (max. 10000000)
 
