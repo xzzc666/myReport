@@ -7,19 +7,99 @@
 \citation{FRED SERIES API}
 \@writefile{toc}{\contentsline {section}{\numberline {1}Introduction}{1}{section.1}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{\numberline {2}System overview}{1}{section.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {3}Data discovery and acquisition}{1}{section.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {3}Data Discovery and Acquisition}{1}{section.3}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.1}Data Sources and Usage Protocols}{1}{subsection.3.1}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.2}Dataset Selection}{1}{subsection.3.2}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Data acquisition and storage workflow}}{2}{figure.1}\protected@file@percent }
-\newlabel{fig:data_pipeline}{{1}{2}{Data acquisition and storage workflow}{figure.1}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.3}Data storage and log writing}{2}{subsection.3.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {4}Object model, data validation, and storage}{3}{section.4}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {5}Dataset construction and sampling}{3}{section.5}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {6}Problem formalisation}{3}{section.6}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {7}Representation learning, feature design and impact analysis}{3}{section.7}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {8}Training and evaluation protocol}{3}{section.8}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {9}References}{3}{section.9}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {10}Appendix}{3}{section.10}\protected@file@percent }
-\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces Dataset selected for model training and evaluation.}}{4}{table.1}\protected@file@percent }
-\newlabel{tab:data_sources}{{1}{4}{Dataset selected for model training and evaluation}{table.1}{}}
-\gdef \@abspage@last{4}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3}Data Backup and Logging}{1}{subsection.3.3}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Data acquisition and storage workflow}}{2}{figure.caption.1}\protected@file@percent }
+\providecommand*\caption@xref[2]{\@setref\relax\@undefined{#1}}
+\newlabel{fig:data_pipeline}{{1}{2}{Data acquisition and storage workflow}{figure.caption.1}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {4}Object Model, Data Validation, and Storage}{2}{section.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}Data Structure and Organisation}{2}{subsection.4.1}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces Dataset schema}}{2}{table.caption.2}\protected@file@percent }
+\newlabel{tab:dataset_schema}{{1}{2}{Dataset schema}{table.caption.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2}Data Validation}{2}{subsection.4.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.3}Data Storage}{3}{subsection.4.3}\protected@file@percent }
+\newlabel{sec:data_storage}{{4.3}{3}{Data Storage}{subsection.4.3}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {5}Dataset Construction and Sampling}{3}{section.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.1}Feature Construction}{3}{subsection.5.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.2}Temporal Sampling and Dataset Splitting}{3}{subsection.5.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.3}Target Definition}{4}{subsection.5.3}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces Label distribution across dataset splits}}{4}{table.caption.3}\protected@file@percent }
+\newlabel{tab:label_distribution}{{2}{4}{Label distribution across dataset splits}{table.caption.3}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {6}Problem formalisation}{4}{section.6}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.1}Loss Function}{4}{subsection.6.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.2}Evaluation Metrics}{5}{subsection.6.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {7}Representation Learning, Feature Design and Impact Analysis}{5}{section.7}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.1}Representation Learning and Feature Influence}{5}{subsection.7.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.2}Choice of Dimensionality Reduction Method}{5}{subsection.7.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.3}PCA Compression Strategies}{6}{subsection.7.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.4}Impact Analysis}{6}{subsection.7.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {8}Training and evaluation protocol}{6}{section.8}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {8.1}Training Curves and Model Selection}{6}{subsection.8.1}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Training and validation curves under five different random seeds.}}{6}{figure.caption.4}\protected@file@percent }
+\newlabel{fig:training_curves_seeds}{{2}{6}{Training and validation curves under five different random seeds}{figure.caption.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {8.2}Evaluation Results and Baseline Comparison}{7}{subsection.8.2}\protected@file@percent }
+\newlabel{fig:acc_small}{{3a}{7}{Accuracy}{figure.caption.5}{}}
+\newlabel{sub@fig:acc_small}{{a}{7}{Accuracy}{figure.caption.5}{}}
+\newlabel{fig:mf1_small}{{3b}{7}{Micro-F1}{figure.caption.5}{}}
+\newlabel{sub@fig:mf1_small}{{b}{7}{Micro-F1}{figure.caption.5}{}}
+\newlabel{fig:ddr_small}{{3c}{7}{Directional reversal rate}{figure.caption.5}{}}
+\newlabel{sub@fig:ddr_small}{{c}{7}{Directional reversal rate}{figure.caption.5}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Evaluation metrics across five random seeds and baseline methods.}}{7}{figure.caption.5}\protected@file@percent }
+\newlabel{fig:metrics_overview}{{3}{7}{Evaluation metrics across five random seeds and baseline methods}{figure.caption.5}{}}
+\newlabel{fig:cm_model_small}{{4a}{7}{Proposed model (5 seeds)}{figure.caption.6}{}}
+\newlabel{sub@fig:cm_model_small}{{a}{7}{Proposed model (5 seeds)}{figure.caption.6}{}}
+\newlabel{fig:cm_major_small}{{4b}{7}{Majority baseline}{figure.caption.6}{}}
+\newlabel{sub@fig:cm_major_small}{{b}{7}{Majority baseline}{figure.caption.6}{}}
+\newlabel{fig:cm_random_small}{{4c}{7}{Random baseline}{figure.caption.6}{}}
+\newlabel{sub@fig:cm_random_small}{{c}{7}{Random baseline}{figure.caption.6}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces Overview of confusion matrices on the test set.}}{7}{figure.caption.6}\protected@file@percent }
+\newlabel{fig:cm_overview}{{4}{7}{Overview of confusion matrices on the test set}{figure.caption.6}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {9}References}{8}{section.9}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {10}Appendix A Additional Analysis}{8}{section.10}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {10.1}Analysis of Direct Discrete Classification}{8}{subsection.10.1}\protected@file@percent }
+\newlabel{app:direct_classification}{{10.1}{8}{Analysis of Direct Discrete Classification}{subsection.10.1}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {10.1.1}Model Formulation}{8}{subsubsection.10.1.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {10.1.2}Experimental Setup}{8}{subsubsection.10.1.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {10.1.3}Training Behaviour}{8}{subsubsection.10.1.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {10.1.4}Discussion}{8}{subsubsection.10.1.4}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces Training and validation curves for direct discrete classification.}}{9}{figure.caption.7}\protected@file@percent }
+\newlabel{fig:direct_cls_curves}{{5}{9}{Training and validation curves for direct discrete classification}{figure.caption.7}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {10.2}Training Stability under Different Dataset Configurations}{9}{subsection.10.2}\protected@file@percent }
+\newlabel{app:dataset_analysis}{{10.2}{9}{Training Stability under Different Dataset Configurations}{subsection.10.2}{}}
+\newlabel{fig:curve_all_re}{{6a}{9}{Full 31-category dataset}{figure.caption.8}{}}
+\newlabel{sub@fig:curve_all_re}{{a}{9}{Full 31-category dataset}{figure.caption.8}{}}
+\newlabel{fig:curve_part_re}{{6b}{9}{Reduced 9-category dataset}{figure.caption.8}{}}
+\newlabel{sub@fig:curve_part_re}{{b}{9}{Reduced 9-category dataset}{figure.caption.8}{}}
+\newlabel{fig:curve_sp500_re}{{6c}{9}{SP500-only dataset}{figure.caption.8}{}}
+\newlabel{sub@fig:curve_sp500_re}{{c}{9}{SP500-only dataset}{figure.caption.8}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces Training curves under different dataset configurations.}}{9}{figure.caption.8}\protected@file@percent }
+\newlabel{fig:training_curves_horizontal}{{6}{9}{Training curves under different dataset configurations}{figure.caption.8}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {11}Appendix B Data Display}{11}{section.11}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {3}{\ignorespaces 31 Categories Dataset}}{11}{table.caption.9}\protected@file@percent }
+\newlabel{tab:31_Categories_Dataset}{{3}{11}{31 Categories Dataset}{table.caption.9}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {4}{\ignorespaces 9 Categories Dataset}}{12}{table.caption.10}\protected@file@percent }
+\newlabel{tab:9_Categories_Dataset}{{4}{12}{9 Categories Dataset}{table.caption.10}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces Scatter plots illustrating the relationship between individual PCA components and the predicted target $Y_t^{R}$. Each subplot shows one principal component against the future cumulative return.}}{13}{figure.caption.11}\protected@file@percent }
+\newlabel{fig:pca_target}{{7}{13}{Scatter plots illustrating the relationship between individual PCA components and the predicted target $Y_t^{R}$. Each subplot shows one principal component against the future cumulative return}{figure.caption.11}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {11.1}Training Curves under Different Random Seeds}{13}{subsection.11.1}\protected@file@percent }
+\newlabel{app:seed_curves}{{11.1}{13}{Training Curves under Different Random Seeds}{subsection.11.1}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {8}{\ignorespaces Enlarged training and validation curves under five different random seeds.}}{14}{figure.caption.12}\protected@file@percent }
+\newlabel{fig:training_curves_seeds_appendix}{{8}{14}{Enlarged training and validation curves under five different random seeds}{figure.caption.12}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {11.2}Evaluation Metrics}{15}{subsection.11.2}\protected@file@percent }
+\newlabel{Ealuation_Metrics_Appendix}{{11.2}{15}{Evaluation Metrics}{subsection.11.2}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {9}{\ignorespaces Decision accuracy across five random seeds and baseline methods.}}{15}{figure.caption.13}\protected@file@percent }
+\newlabel{fig:acc_large}{{9}{15}{Decision accuracy across five random seeds and baseline methods}{figure.caption.13}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {10}{\ignorespaces Micro-averaged F1 score across different random seeds and baseline methods.}}{15}{figure.caption.14}\protected@file@percent }
+\newlabel{fig:mf1_large}{{10}{15}{Micro-averaged F1 score across different random seeds and baseline methods}{figure.caption.14}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {11}{\ignorespaces Directional reversal rate (DRR) across random seeds and baseline methods.}}{16}{figure.caption.15}\protected@file@percent }
+\newlabel{fig:ddr_large}{{11}{16}{Directional reversal rate (DRR) across random seeds and baseline methods}{figure.caption.15}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {11.3}Confusion Matrices}{16}{subsection.11.3}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {12}{\ignorespaces Confusion matrices of the proposed model under five different random seeds.}}{16}{figure.caption.16}\protected@file@percent }
+\newlabel{fig:cm_seeds_large}{{12}{16}{Confusion matrices of the proposed model under five different random seeds}{figure.caption.16}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {13}{\ignorespaces Confusion matrix of the majority-class baseline on the test set.}}{17}{figure.caption.17}\protected@file@percent }
+\newlabel{fig:cm_major_large}{{13}{17}{Confusion matrix of the majority-class baseline on the test set}{figure.caption.17}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {14}{\ignorespaces Confusion matrix of the random baseline on the test set.}}{18}{figure.caption.18}\protected@file@percent }
+\newlabel{fig:cm_random_large}{{14}{18}{Confusion matrix of the random baseline on the test set}{figure.caption.18}{}}
+\gdef \@abspage@last{18}

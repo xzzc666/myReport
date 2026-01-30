@@ -13,9 +13,14 @@
 \usepackage{url}
 \usepackage{graphicx}
 
+\usepackage{float}
 
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{subcaption}
+\usepackage{pdflscape}
 
-\title{Formatting Instructions for TMLR \\Journal Submissions}
+\title{Predicting Market Decisions via Continuous Return Forecasting with Risk-Aware Decision Mapping}
 
 % Authors must not appear in the submitted version. They should be hidden
 % as long as the tmlr package is used without the [accepted] or [preprint] options.
@@ -40,90 +45,581 @@
 
 \maketitle
 
-\begin{abstract}
-
-\end{abstract}
 
 \section{Introduction}
 
 \section{System overview}
 
-\section{Data discovery and acquisition}
+\section{Data Discovery and Acquisition}
 
-  \subsection{Data Sources and Usage Protocols}
-    This project uses \textbf{FRED} (Federal Reserve Economic Data) as the primary data source. 
-    \textbf{FRED} provides a large collection of authoritative macroeconomic and financial time--series data and supports programmatic access through a free API key.
+\subsection{Data Sources and Usage Protocols}
 
-    According to the official \textit{FRED API Terms of Use} \cite{FRED API Terms of Use}, the free API may be used for academic research and non--commercial purposes. 
-    In this project, all retrieved data are used exclusively for model training and analysis. 
-    The original data are neither shared nor redistributed, and the usage fully complies with the relevant terms and conditions.
+This project uses \textbf{FRED} (Federal Reserve Economic Data) as the primary data source. 
+FRED provides authoritative macroeconomic and financial time-series data and supports programmatic access via a free API key.
 
-    In addition, the official \textbf{FRED} website provides comprehensive API documentation\cite{FRED ALL API} to guide standardized access to economic and financial time--series data. 
-    Since the data acquisition process in this project is based on indicator (series) identifiers, the \textit{series observations} endpoint in the \textbf{FRED} API documentation is primarily referenced\cite{FRED SERIES API}. 
-    In the implementation, HTTP requests are sent using Python's \texttt{requests} library, with the parameters \texttt{api\_key}, \texttt{file\_type}, \texttt{series\_id}, \texttt{realtime\_start}, and \texttt{realtime\_end} used to control the type and time range of the retrieved time series. 
-    This design enables an automated and fully reproducible data collection pipeline.
+According to the official \textit{FRED API Terms of Use} \cite{FRED API Terms of Use}, the free API may be used for academic and non-commercial research purposes. 
+All retrieved data in this study are used exclusively for model training and analysis and are neither redistributed nor shared, fully complying with the stated usage conditions.
 
-  \subsection{Dataset Selection}
+Data acquisition is conducted through the official FRED API documentation \cite{FRED ALL API}, with primary reference to the \textit{series observations} endpoint \cite{FRED SERIES API}. 
+HTTP requests are issued using Python’s \texttt{requests} library, with parameters including \texttt{api\_key}, \texttt{series\_id}, \texttt{file\_type}, and \texttt{realtime\_start}, and \texttt{realtime\_end}. 
+This design enables automated and reproducible data collection.
 
-    Table~\ref{tab:data_sources} summarises the data collected in this project and the rationale for selecting each data source. 
-    Due to space limitations, the full table is reported in \textit{Appendix}. 
+\subsection{Dataset Selection}
 
-    In total, \textbf{31 distinct time-series datasets} are incorporated in this study. 
-    These datasets are organised into multiple economically meaningful categories, including the \textit{target market}, \textit{auxiliary equity markets}, \textit{volatility and systemic risk}, \textit{credit spreads}, \textit{interest rates and term structure}, \textit{inflation}, \textit{liquidity and monetary conditions}, \textit{labour market}, \textit{economic activity}, \textit{housing market}, and \textit{consumption and sentiment}. 
-    This structured design enables the model to characterise market behaviour from complementary macro-financial perspectives rather than relying on a single information source.
+A total of \textbf{31 distinct time-series datasets} are incorporated in this study. 
+These indicators are grouped into economically meaningful categories, including equity markets, volatility and systemic risk, credit spreads, interest rates and term structure, inflation, liquidity conditions, labour market, economic activity, housing market, and consumption and sentiment. 
+The complete list and selection rationale are summarised in Table~\ref{tab:31_Categories_Dataset} and reported in detail in the Appendix.
 
-    The dataset spans the period from \textbf{January 1, 2015} to \textbf{December 31, 2025}, covering multiple market regimes and macroeconomic cycles.
+The dataset spans the period from January 1, 2015 to December 31, 2025, covering multiple market regimes and macroeconomic cycles.
 
-    In the following training stage shows that using a limited number of input variables led to pronounced overfitting, particularly under high-capacity model configurations. 
-    Therefore, a relatively large set of macroeconomic and financial indicators is intentionally adopted. 
+Using a limited number of input variables may lead to overfitting under high-capacity model configurations. 
+To mitigate this risk, a broad set of macro-financial indicators is collected to provide richer contextual information. 
+Not all indicators are directly fed into the model simultaneously; instead, the full dataset serves as a candidate feature pool from which informative representations are selectively extracted during subsequent data processing and representation learning stages.
 
-    Although incorporating numerous input variables increases the dimensionality of the feature space, this challenge is addressed in later stages (\textit{Representation Learning, Feature Design, and Impact Analysis}) through Principal Component Analysis (PCA). 
-    PCA enables effective dimensionality reduction while preserving the dominant information structure, thereby mitigating the negative impact of dimensionality growth on model training and generalisation performance.
+\subsection{Data Backup and Logging}
 
+To improve acquisition efficiency and robustness, a local caching mechanism is introduced to avoid repeated downloads of identical historical data. 
+All raw data are persistently stored in a local SQLite database (\texttt{data\_raw.db}) under the \texttt{data} directory (details showed in Section~\ref{sec:data_storage}). 
+When data already exist locally, they are retrieved directly without issuing new API requests, thereby reducing acquisition time and preventing access rate limitations.
 
-  \subsection{Data storage and log writing}
-  Data storage is necessary because repeatedly retrieving identical historical data through APIs not only leads to access rate limitations and increased server load, but also significantly raises the time cost of data acquisition. 
-  During model training and multiple experimental runs, storing all data in a unified local database effectively avoids redundant requests, improves overall computational efficiency, and ensures data consistency as well as the reproducibility of experimental results.
+The overall acquisition workflow is illustrated in Figure~\ref{fig:data_pipeline}. 
+A control hyperparameter \texttt{REGENERATE} determines whether raw data should be re-fetched. 
+When enabled, or when the local database is absent, the system automatically identifies missing series and requests only the unavailable components from the FRED API.
 
-  In this project, an SQLite database is adopted as the data storage solution. 
-  SQLite is a lightweight local database natively supported by Python, offering advantages such as offline operation, no account configuration, and simple deployment. 
-  Since the data in this project only need to be fully acquired once and stored for long-term use—without requirements for data sharing, high-concurrency access, or frequent write operations—a local database solution is sufficient to meet all project needs. 
-  Furthermore, SQL is selected instead of a NoSQL database to ensure strict temporal alignment across different macroeconomic and financial indicators, thereby avoiding data mismatch issues caused by flexible or non-uniform field structures. 
-  This design improves the structural stability and overall reliability of the dataset.
+\begin{figure}[h]
+\centering
+\includegraphics[width=\linewidth]{figures/data_store.png}
+\caption{Data acquisition and storage workflow}
+\label{fig:data_pipeline}
+\end{figure}
 
-  \begin{figure}[t]
-  \centering
-  \includegraphics[width=\linewidth]{figures/data_store.png}
-  \caption{Data acquisition and storage workflow}
-  \label{fig:data_pipeline}
-  \end{figure}
+To support runtime monitoring, a lightweight logging mechanism records data acquisition progress and execution errors in a dedicated log file (\texttt{data\_fetch.log}), thereby improving the observability and reliability of the data collection pipeline. 
+Subsequent processing and representation stages are likewise tracked through corresponding log files, including \texttt{data\_processing.log} and \texttt{data\_representing.log}, ensuring end-to-end traceability across the entire data pipeline.
 
 
-  The overall execution logic is illustrated in Figure~\ref{fig:data_pipeline}. 
-  A hyperparameter \texttt{REGENERATE} is introduced to control whether the raw feature data should be regenerated. 
-  When \texttt{REGENERATE} is set to \texttt{true} or when the database file does not exist, the program automatically detects missing data series and sends API requests only for the missing components. 
-  The complete dataset is then stored in the \texttt{data\_raw.db} database located in the \texttt{data} directory.
 
-  In addition, to facilitate runtime monitoring and the identification of potential errors, a \texttt{WriteLog} function is implemented. 
-  This function outputs progress information and error messages to the terminal while simultaneously recording them in the \texttt{data\_fetch.log} file under the \texttt{data} directory, thereby enhancing the traceability and debugging efficiency of the data collection pipeline.
+\section{Object Model, Data Validation, and Storage}
+
+\subsection{Data Structure and Organisation}
+
+Each data series retrieved from the API follows a unified tabular structure consisting of five fields: \texttt{series\_id}, \texttt{date}, \texttt{value}, \texttt{realtime\_start}, and \texttt{realtime\_end}. While this format preserves complete release information, it is not directly suitable for downstream model training and therefore requires structural reorganisation.
+
+The fields \texttt{realtime\_start} and \texttt{realtime\_end}, which describe data release windows, do not contribute to feature construction and are removed during preprocessing. All variables are originally stored in \texttt{text} format; consequently, \texttt{value} is converted to numerical format and \texttt{date} to a date-type index to enable reliable temporal alignment and numerical computation.
+
+Furthermore, storing \texttt{series\_id} repeatedly across rows is unnecessary. Since its primary role is to distinguish indicators, it is restructured as the column dimension of the dataset. This transformation reorganises the dataset by using \texttt{series\_id} solely as column names, allowing different indicators to be clearly distinguished without redundant repetition across rows.
 
 
-  
-    
+As all time series span a unified period from January 1, 2015 to December 31, 2025, different indicators are aligned by the date index, resulting in a single multivariate dataset. The final schema is shown in Table~\ref{tab:dataset_schema}.
+
+\begin{table}[h]
+\centering
+\caption{Dataset schema}
+\label{tab:dataset_schema}
+\begin{tabular}{l l l l l l l l}
+\hline
+Date & SP500 & DJIA & NASDAQCOM & VIXCLS & TEDRATE & STLFSI4 & $\cdots$ \\
+datetime64[us] & float64 & float64 & float64 & float64 & float64 & float64 & float64 \\
+\hline
+\end{tabular}
+\end{table}
+
+\subsection{Data Validation}
+
+During dataset construction, observations sharing identical timestamps are automatically aligned across all indicators. Any inconsistencies that prevent proper alignment trigger runtime errors and are recorded in log files, ensuring temporal integrity.
+
+Missing values arise primarily from heterogeneous data release frequencies (daily, weekly, and monthly) and occasional publication suspensions during holidays or exceptional events. To address this issue, a forward-fill strategy is applied uniformly, whereby missing entries are filled using the most recent available observation. This approach reflects realistic information availability and avoids the introduction of future data, thereby preventing data leakage. Linear interpolation is deliberately avoided, as it implicitly relies on future observations and may distort temporal dynamics.
+
+After forward filling, a small number of missing values may remain at the beginning of the time series due to the absence of prior observations. As this segment accounts for fewer than 30 days and lies entirely at the start of the timeline, it is removed without affecting data continuity.
+
+In addition, no explicit outlier removal or value clipping is performed. Extreme observations are retained, as such values often reflect periods of market stress, regime shifts, or systemic events. Removing or smoothing these values may eliminate informative signals that are critical for modelling financial dynamics.
 
 
-\section{Object model, data validation, and storage}
-\section{Dataset construction and sampling} 
+
+\subsection{Data Storage}\label{sec:data_storage}
+
+An SQLite database is adopted as the storage backend due to its lightweight design, native Python support, and suitability for offline operation. Since all indicators are collected once and reused for long-term experimentation, the system does not require concurrent access or frequent write operations, making a local relational database sufficient.
+
+A structured SQL schema is preferred over NoSQL alternatives to enforce strict temporal alignment and fixed field definitions, thereby improving dataset stability and consistency.
+
+To support modular processing and reproducibility, datasets are persistently stored at each major stage of the pipeline: raw API outputs in \texttt{data\_raw.db}, cleaned and validated data in \texttt{data\_processed.db}, and model-ready feature representations in \texttt{data\_represented.db}. This staged storage design enables independent inspection, rollback, and reuse of intermediate results.
+
+
+
+\section{Dataset Construction and Sampling}
+
+\subsection{Feature Construction}
+
+Based on the cleaned dataset, additional derived variables are constructed to support market modelling.
+
+For the equity indices \texttt{SP500}, \texttt{DJIA}, and \texttt{NASDAQCOM}, logarithmic returns are computed as
+\begin{equation}
+r_t = \ln\left(\frac{P_t}{P_{t-1}}\right),
+\end{equation}
+\begin{equation}
+\mathbf{x}_t =
+\Big[
+\mathbf{x}^{\text{raw}}_t \,;\,
+\mathbf{r}_t \,;\,
+\overline{P}^{(30)}_{t,\text{SP500}} \,;\,
+\overline{r}^{(30)}_{t,\text{SP500}}
+\Big],
+\end{equation}
+
+
+which provide a scale-invariant representation of relative price movements.
+
+As the S\&P~500 index serves as the primary prediction target, rolling statistics over the previous 30 trading days are additionally computed for both its price level and logarithmic return, including rolling mean price and rolling mean return. These smoothed features enhance stability.
+
+All derived variables are computed exclusively from historical observations, thereby preventing data leakage.
+
+\subsection{Temporal Sampling and Dataset Splitting}
+\begin{equation}
+\mathbf{X}_t = \big[\mathbf{x}_{t-49}, \mathbf{x}_{t-48}, \ldots, \mathbf{x}_{t}\big]
+\end{equation}
+Learning samples are constructed using a sliding-window approach, where the past 50 trading days are used as input to predict market behaviour over the subsequent 20 trading days. A longer prediction horizon is adopted due to the high stochasticity and limited predictability of short-term financial price fluctuations.
+
+The dataset is partitioned chronologically into training, validation, and test sets with a ratio of 70\%, 15\%, and 15\%, respectively. Gaussian normalisation is then applied to all numerical variables, with mean and variance estimated exclusively from the training set and reused for the validation and test sets, ensuring consistent scaling without information leakage.
+
+\subsection{Target Definition}
+
+The model is designed to forecast future market behaviour by predicting a continuous return value rather than directly outputting discrete trading actions. 
+Specifically, the forecasting target is defined as the cumulative logarithmic return over the next 20 trading days:
+\begin{equation}
+Y_{t}^{R} = \sum_{i=1}^{20} r_{t+i}.
+\end{equation}
+
+For evaluation and decision interpretation, the predicted cumulative return is subsequently mapped to discrete trading actions through a threshold-based decision function. 
+The same transformation is applied to the ground-truth target values, ensuring consistent comparison at the decision level:
+\begin{equation}
+Y_{t}^{C} =
+\begin{cases}
+\text{Buy},  & Y_{t}^{R} > \theta_2, \\
+\text{Hold}, & \theta_1 < Y_{t}^{R} \le \theta_2, \\
+\text{Sell}, & Y_{t}^{R} \le \theta_1,
+\end{cases}
+\end{equation}
+
+
+Compared with direct discrete classification, this formulation provides richer training feedback during optimisation, as the learning process is guided by the magnitude of prediction errors rather than solely by categorical correctness. 
+This enables more informative gradient updates and improves optimisation stability. 
+At the same time, prediction errors are more likely to manifest as neighbouring decision deviations (e.g., Buy vs.\ Hold or Hold vs.\ Sell), while severe directional reversals (Buy vs.\ Sell) are less frequent.
+
+The limitations of direct discrete classification are further analysed in Appendix~\ref{app:direct_classification}, where comparative experiments demonstrate severe overfitting and unstable optimisation behaviour.
+
+
+
+Thresholds set to $\theta_1 = 0$ and $\theta_2 = 0.03$. This asymmetric threshold design prioritises risk avoidance over return maximisation, reflecting the practical objective of reducing false positive buy signals. In financial decision-making, avoiding losses is often more critical than capturing marginal gains, making conservative classification boundaries preferable.
+
+
+The resulting label distributions across training, validation, and test sets are summarised in Table~\ref{tab:label_distribution}. Overall, the class proportions remain relatively balanced, reducing the risk of biased training and enabling fair evaluation of classification performance.
+
+
+\begin{table}[h]
+\centering
+\caption{Label distribution across dataset splits}
+\label{tab:label_distribution}
+\begin{tabular}{l c c c}
+\hline
+ & Buy & Hold & Sell \\
+\hline
+Train & 502 (28.3\%) & 717 (40.4\%) & 557 (31.4\%) \\
+Val   & 150 (39.5\%) & 123 (32.4\%) & 107 (28.2\%) \\
+Test  & 120 (31.4\%) & 161 (42.1\%) & 101 (26.4\%) \\
+\hline
+\end{tabular}
+\end{table}
+
+
+
+
 \section{Problem formalisation}
-\section{Representation learning, feature design and impact analysis}
+\subsection{Loss Function}
+
+The forecasting model is trained to predict continuous future cumulative returns. 
+Accordingly, a loss function is required to quantify and penalise the discrepancy between predicted and realised returns.
+
+In this study, the Smooth L1 loss is adopted as the optimisation objective:
+\begin{equation}
+\mathcal{L} =
+\begin{cases}
+\frac{1}{2}(\hat{Y}_t - Y_{t}^{R})^2, & |\hat{Y}_t - Y_{t}^{R}| < 1, \\
+|\hat{Y}_t - Y_{t}^{R}| - \frac{1}{2}, & \text{otherwise},
+\end{cases}
+\end{equation}
+where $\hat{Y}_t$ and $Y_{t}^{R}$ denote the predicted and ground-truth cumulative logarithmic returns, respectively.
+
+The Smooth L1 loss combines the advantages of mean squared error and mean absolute error. 
+For small prediction deviations, it behaves quadratically, providing smooth gradients that facilitate stable convergence. 
+For larger deviations, it transitions to a linear form, reducing sensitivity to extreme prediction errors.
+
+This property is particularly desirable in financial time-series forecasting, where return distributions are heavy-tailed and occasional extreme market movements are common. 
+By limiting the influence of large outliers on gradient updates, Smooth L1 loss prevents unstable optimisation while still preserving meaningful error magnitude information.
+
+\subsection{Evaluation Metrics}
+
+To evaluate model performance, three complementary metrics are adopted:
+
+\begin{itemize}
+    \item \textbf{Accuracy.} 
+    Measures the proportion of correctly predicted trading actions:
+    \begin{equation}
+        \text{Accuracy} = \frac{1}{N} \sum_{i=1}^{N} \mathbb{I}(\hat{y}_i = y_i),
+    \end{equation}
+    where $N$ denotes the total number of samples, $y_i$ and $\hat{y}_i$ represent the ground-truth and predicted class labels, respectively, and $\mathbb{I}(\cdot)$ is the indicator function.
+
+    \item \textbf{Micro-averaged F1 score.} 
+    Computes precision and recall globally by aggregating true positives (TP), false positives (FP), and false negatives (FN) across all classes:
+    \begin{equation}
+        \text{F1}_{\text{micro}} =
+        \frac{2 \sum_{c} \text{TP}_c}
+        {2 \sum_{c} \text{TP}_c + \sum_{c} \text{FP}_c + \sum_{c} \text{FN}_c}.
+    \end{equation}
+    This formulation provides a stable evaluation under moderate class imbalance.
+
+    \item \textbf{Directional reversal rate.} 
+    Measures the frequency of severe decision errors where \texttt{Buy} and \texttt{Sell} predictions are reversed:
+    \begin{equation}
+        \text{DRR} =
+        \frac{
+        \sum_{i=1}^{N} \mathbb{I}\big(
+        (y_i = \text{Buy} \wedge \hat{y}_i = \text{Sell}) \,\vee\,
+        (y_i = \text{Sell} \wedge \hat{y}_i = \text{Buy})
+        \big)
+        }{N}.
+    \end{equation}
+\end{itemize}
+
+In addition to scalar metrics, confusion matrices are used to visualise classification behaviour. This representation jointly reflects overall accuracy, class-wise error patterns, and directional reversals, enabling intuitive interpretation of model performance.
+
+\section{Representation Learning, Feature Design and Impact Analysis}
+
+\subsection{Representation Learning and Feature Influence}
+
+The constructed dataset contains a large number of macroeconomic indicators, market variables, and derived features, resulting in a high-dimensional input space. Such dimensionality increases computational cost and may negatively affect model generalisation due to the curse of dimensionality. Representation learning is therefore introduced to obtain a more compact and efficient feature representation.
+
+\subsection{Choice of Dimensionality Reduction Method}
+
+Principal Component Analysis (PCA) is adopted to project the original feature space into a lower-dimensional latent representation by preserving directions of maximum variance. This enables effective removal of redundant information while maintaining the dominant structure of the data.
+
+Alternative feature reduction approaches are not adopted for the following reasons:
+
+\begin{itemize}
+    \item \textbf{Correlation-based analysis.} 
+    The large number of variables and complex interdependencies among macro-financial indicators make pairwise correlations difficult to interpret reliably.
+
+    \item \textbf{Wrapper-based feature selection.} 
+    Such methods require repeated model training and become computationally prohibitive under high-dimensional input spaces.
+\end{itemize}
+
+The objective of representation learning in this study is not to interpret individual feature contributions, but to eliminate redundant dimensions and improve modelling efficiency. PCA is therefore well suited to this setting.
+
+\subsection{PCA Compression Strategies}
+
+Two PCA-based compression strategies are considered. The first projects the original feature space onto the subspace spanned by the eigenvectors corresponding to the top 10 largest eigenvalues. The second retains principal components whose eigenvalues exceed a predefined threshold of $0.1$, allowing the retained dimensionality to be determined adaptively by the intrinsic variance structure of the data.
+
+In this study, the second strategy is adopted as the primary compression method, as it preserves informative variance while discarding weakly informative components in a data-driven manner.
+
+\subsection{Impact Analysis}
+
+After projection, the input representation is reduced to 13 principal components. The relationships between the principal components and the predicted target $Y_t^{R}$ are provided in Appendix~\ref{fig:pca_target}.
+
+
+Empirical inspection indicates that several components, including PCA3, PCA6, PCA8, and PCA10, exhibit positive correlation with the target variable, while PCA5 shows a more pronounced negative correlation. These patterns suggest that the transformed feature space captures meaningful directional information and improves linear separability with respect to the prediction target.
+
+Overall, PCA-based dimensionality reduction substantially reduces feature dimensionality, mitigates the risk of dimensionality explosion, and leads to improved training efficiency and optimisation stability in downstream learning models.
+
+
+
 \section{Training and evaluation protocol}
+The effect of different dataset and parameter configurations on training stability was systematically analysed. 
+Detailed comparisons of training dynamics under varying feature sets are provided in Appendix~\ref{app:dataset_analysis}.
+
+
+\subsection{Training Curves and Model Selection}
+
+\begin{figure}[h]
+    \centering
+    \begin{subfigure}{0.19\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/training_curve1.png}
+        \caption{Seed 0}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.19\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/training_curve2.png}
+        \caption{Seed 1}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.19\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/training_curve3.png}
+        \caption{Seed 2}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.19\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/training_curve4.png}
+        \caption{Seed 3}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.19\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/training_curve5.png}
+        \caption{Seed 4}
+    \end{subfigure}
+
+    \caption{Training and validation curves under five different random seeds.}
+    \label{fig:training_curves_seeds}
+\end{figure}
+
+
+Figure~\ref{fig:training_curves_seeds} presents the training dynamics obtained under five different different seeds (0--4). For clarity of visual inspection, enlarged training curves under different random seeds are provided in the Appendix Figure~\ref{fig:training_curves_seeds_appendix}.
+Across all runs, the model demonstrates highly consistent convergence behaviour, indicating strong robustness to random initialisation and good generalisation capability.
+
+Although noticeable oscillations appear during early training, the fluctuation magnitude gradually decreases after approximately 100 epochs, and the optimisation process becomes increasingly stable. 
+This suggests that the model successfully learns meaningful temporal structures while progressively reducing sensitivity to noise.
+
+To ensure reliable model selection, checkpoint saving is enabled after 200 epochs. 
+Among these later epochs, the model achieving the highest validation accuracy is selected as the final model and subsequently evaluated on the test set. 
+This strategy mitigates the effect of transient fluctuations and ensures that testing is conducted using the most stable and performant parameter configuration.
+
+\subsection{Evaluation Results and Baseline Comparison}
+Due to space limitations, detailed visualisations are deferred to Appendix~Section~\ref{Ealuation_Metrics_Appendix}.
+
+The proposed model is evaluated on the test set under five different random seeds.
+Performance is measured using decision accuracy, micro-averaged F1 score,
+and directional reversal rate (DRR).
+Two baseline strategies are included for comparison: a random decision policy
+and a majority-class policy.
+
+\begin{figure}[h]
+    \centering
+
+    \begin{subfigure}{0.32\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/acc.png}
+        \caption{Accuracy}
+        \label{fig:acc_small}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.32\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/MF1.png}
+        \caption{Micro-F1}
+        \label{fig:mf1_small}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.32\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/DDR.png}
+        \caption{Directional reversal rate}
+        \label{fig:ddr_small}
+    \end{subfigure}
+
+    \caption{Evaluation metrics across five random seeds and baseline methods.}
+    \label{fig:metrics_overview}
+\end{figure}
+
+
+
+As shown in Figure~\ref{fig:acc_small}, the proposed model achieves stable performance across different random seeds,
+with accuracy consistently around 65\% and only minor variation.
+In contrast, the random baseline achieves approximately 33\% accuracy,
+while the majority baseline reaches about 42\%, consistent with the class distribution of the test set.
+Even at the lower bound of the confidence interval, the proposed model consistently outperforms both baselines, indicating statistically robust improvements.
+
+
+A similar trend is observed for the micro-averaged F1 score, as shown in Figure~\ref{fig:mf1_small},
+further confirming the consistency of the model’s decision-level performance.
+
+
+
+\begin{figure}[h]
+    \centering
+
+    \begin{subfigure}{0.69\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/Mseeds.png}
+        \caption{Proposed model (5 seeds)}
+        \label{fig:cm_model_small}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.14\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/Mmajor.png}
+        \caption{Majority baseline}
+        \label{fig:cm_major_small}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.14\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/MRandom.png}
+        \caption{Random baseline}
+        \label{fig:cm_random_small}
+    \end{subfigure}
+
+    \caption{Overview of confusion matrices on the test set.}
+    \label{fig:cm_overview}
+\end{figure}
+
+The confusion matrices in Figure~\ref{fig:cm_overview} demonstrate well-structured classification behaviour.
+Most prediction errors occur between neighbouring actions (e.g., \texttt{Buy} vs.\ \texttt{Hold}),
+while direct \texttt{Buy}--\texttt{Sell} reversals are extremely rare.
+
+
+As shown in Figure~\ref{fig:ddr_small}, the proposed model maintains an extremely low DRR across all random seeds,
+substantially lower than the random baseline.
+Although the majority baseline achieves zero DRR, this result is degenerate,
+as it arises from always predicting the \texttt{Hold} class rather than from informed decision-making.
+
+Overall, the proposed model achieves significantly higher predictive performance than baseline strategies,
+while simultaneously maintaining strong decision-level safety.
+
+
+
+
+
 \section{References}
-\section{Appendix}
+\section{Appendix A Additional Analysis} 
+
+\subsection{Analysis of Direct Discrete Classification}
+\label{app:direct_classification}
+
+To further justify the target formulation adopted in this study, an additional set of experiments was conducted using a direct discrete classification model. 
+This appendix provides a comparative analysis illustrating the limitations of directly predicting trading actions, and motivates the use of continuous-return forecasting followed by threshold-based decision mapping.
+
+\subsubsection{Model Formulation}
+
+In the direct classification setting, the model outputs discrete trading actions (\texttt{Buy}, \texttt{Hold}, \texttt{Sell}) directly. 
+The optimisation objective is defined using the standard cross-entropy loss:
+\begin{equation}
+\mathcal{L}_{\text{cls}}
+= - \log
+\frac{e^{z_y}}{\sum_{j} e^{z_j}},
+\end{equation}
+where $z_j$ denotes the predicted logit for class $j$, and $y$ is the ground-truth trading label.
+
+Unlike the continuous-return formulation used in the main experiments, this approach provides only categorical feedback during training, indicating whether a prediction is correct or incorrect, without conveying the magnitude of prediction error.
+
+\subsubsection{Experimental Setup}
+
+For fair comparison, the direct classification model was evaluated under identical experimental conditions to those described in the main body of this report. 
+Specifically, the same preprocessing pipeline, derived feature construction, and PCA-based dimensionality reduction (retaining components with eigenvalues greater than 0.1) were applied.
+
+Three dataset configurations were tested:
+
+\begin{itemize}
+    \item \textbf{Full dataset:} 31 macro-financial indicator categories and their derived features.
+    \item \textbf{Reduced dataset:} 9 selected indicator categories and corresponding derivatives.
+    \item \textbf{Minimal dataset:} the S\&P~500 index and its derived features only.
+\end{itemize}
+
+All models were trained using the same network architecture and optimisation settings as the continuous forecasting model.
+
+\subsubsection{Training Behaviour}
+
+The resulting training curves are shown in Figure~\ref{fig:direct_cls_curves}.
+
+\begin{figure}[h]
+    \centering
+    \begin{subfigure}{0.32\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/Training_curves_all_all_id_cl.png}
+        \caption{Full dataset}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.32\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/Training_curves_all_part_id_cl.png}
+        \caption{Reduced dataset}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.32\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/Training_curves_all_single_id_cl.png}
+        \caption{SP500-only dataset}
+    \end{subfigure}
+    \caption{Training and validation curves for direct discrete classification.}
+    \label{fig:direct_cls_curves}
+\end{figure}
+
+Across all dataset configurations, the training accuracy rapidly approaches nearly 100\%, while the validation accuracy remains significantly lower. 
+This behaviour indicates severe overfitting, even when the dataset size and feature diversity are increased.
+
+Notably, enlarging the dataset does not effectively alleviate this issue. 
+Although the classification model consistently outperforms random and majority baselines, its decision accuracy, convergence speed, and training stability remain substantially inferior to those achieved by the continuous-return forecasting formulation.
+
+\subsubsection{Discussion}
+
+The observed behaviour highlights a fundamental limitation of direct discrete classification in financial decision modelling.
+
+Because the cross-entropy loss only penalises categorical errors, the optimisation process lacks information about how far an incorrect prediction deviates from the true market outcome. 
+As a result, gradient updates are coarse and insensitive to error magnitude, leading to unstable optimisation and poor generalisation.
+
+In contrast, predicting continuous cumulative returns enables the model to receive fine-grained feedback proportional to prediction deviation. 
+This facilitates smoother gradient updates, improved convergence stability, and reduces the likelihood of severe directional errors such as \texttt{Buy}--\texttt{Sell} reversals.
+
+These results empirically support the modelling choice adopted in this study: continuous return forecasting combined with threshold-based decision mapping provides a more stable and informative learning objective than direct discrete classification.
+
+\subsection{Training Stability under Different Dataset Configurations}
+\label{app:dataset_analysis}
+
+\begin{figure}[h]
+    \centering
+
+    \begin{subfigure}{0.32\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/Training_curves_all_all_id_re.png}
+        \caption{Full 31-category dataset}
+        \label{fig:curve_all_re}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.32\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/Training_curves_all_part_id_re.png}
+        \caption{Reduced 9-category dataset}
+        \label{fig:curve_part_re}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.32\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/Training_curves_all_single_id_re.png}
+        \caption{SP500-only dataset}
+        \label{fig:curve_sp500_re}
+    \end{subfigure}
+
+    \caption{Training curves under different dataset configurations.}
+    \label{fig:training_curves_horizontal}
+\end{figure}
 
 
-\begin{table}[t]
-\caption{Dataset selected for model training and evaluation.}
-\label{tab:data_sources}
+As shown in Figure~\ref{fig:curve_all_re}, although both training and validation accuracy converge to satisfactory levels, and the validation loss even falls below the training loss in later epochs, the learning curves exhibit pronounced high-frequency fluctuations. Similar oscillatory behaviour is observed in both accuracy and loss trajectories.
+
+To mitigate this instability, several regularisation strategies were evaluated, including weight decay and gradient clipping. However, these techniques did not substantially reduce the observed oscillations.
+
+This suggests that the model is able to learn meaningful patterns, while the instability is more likely caused by noise and redundancy in the input data rather than optimisation failure.
+
+To investigate this hypothesis, three dataset configurations were evaluated under identical preprocessing settings described in the previous sections, including derived feature construction and PCA-based dimensionality reduction with eigenvalues greater than 0.1:
+
+\begin{itemize}
+    \item \textbf{Full dataset:} 31 macro-financial indicator categories and their derived features.\ref{tab:31_Categories_Dataset}
+    \item \textbf{Reduced dataset:} 9 selected indicator categories and corresponding derivatives.\ref{tab:9_Categories_Dataset}
+    \item \textbf{Minimal dataset:} the S\&P~500 index and its derived features only.
+\end{itemize}
+
+As illustrated in Figure~\ref{fig:training_curves_horizontal}, interestingly, the SP500-based dataset consistently exhibits the fastest convergence, reduced training volatility, and higher decision-level accuracy. This indicates that incorporating a large number of auxiliary indicators may introduce additional noise and representation complexity, thereby weakening effective signal extraction.
+
+
+Based on these empirical findings, the SP500-based dataset is adopted for all subsequent experiments, as it provides the most stable training behaviour and best overall performance.
+
+
+
+\section{Appendix B Data Display}
+
+\begin{table}[H]
+\caption{31 Categories Dataset}
+\label{tab:31_Categories_Dataset}
 \begin{center}
 \begin{tabular}{p{3.4cm} p{4.8cm} p{6.2cm}}
 \multicolumn{1}{c}{\bf CATEGORY} &
@@ -180,5 +676,142 @@ Consumption and sentiment
 \end{table}
 
 
+
+\begin{table}[H]
+\caption{9 Categories Dataset}
+\label{tab:9_Categories_Dataset}
+\begin{center}
+\begin{tabular}{p{3.4cm} p{4.8cm} p{6.2cm}}
+\multicolumn{1}{c}{\bf CATEGORY} &
+\multicolumn{1}{c}{\bf INDICATORS} &
+\multicolumn{1}{c}{\bf REASON}
+\\ \hline \\
+
+Target market
+& SP500
+& Serves as the prediction target, providing the core equity price dynamics for supervised learning \\[6pt]
+
+Auxiliary equity markets
+& DJIA, NASDAQCOM
+& Provide complementary market context and capture cross-market co-movement that may influence SP500 short-term dynamics \\[6pt]
+
+Volatility and systemic risk
+& VIXCLS, TEDRATE
+& Reflect market uncertainty and funding stress conditions that often precede changes in equity risk sentiment \\[6pt]
+
+Credit spreads
+& BAMLH0A0HYM2, BAMLC0A0CM
+& Represent variations in credit risk perception and financing conditions affecting equity market stability \\[6pt]
+
+Interest rates
+& GS3M, GS2
+& Capture short- and medium-term interest rate movements that influence discounting behaviour and equity valuation \\
+
+\end{tabular}
+\end{center}
+\end{table}
+
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\linewidth]{figures/pca_target_relationship.png}
+    \caption{Scatter plots illustrating the relationship between individual PCA components and the predicted target $Y_t^{R}$. Each subplot shows one principal component against the future cumulative return.}
+    \label{fig:pca_target}
+\end{figure}
+
+\subsection{Training Curves under Different Random Seeds}
+\label{app:seed_curves}
+
+Figure~\ref{fig:training_curves_seeds_appendix} presents enlarged training and validation curves obtained under five different random seeds (0--4). 
+The consistent convergence patterns across different initialisations further confirm the robustness and stability of the proposed model.
+
+\begin{figure}[H]
+    \centering
+
+    \begin{subfigure}{0.48\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/training_curve1.png}
+        \caption{Seed 0}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.48\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/training_curve2.png}
+        \caption{Seed 1}
+    \end{subfigure}
+
+    \vspace{0.3cm}
+
+    \begin{subfigure}{0.48\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/training_curve3.png}
+        \caption{Seed 2}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.48\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/training_curve4.png}
+        \caption{Seed 3}
+    \end{subfigure}
+
+    \vspace{0.3cm}
+
+    \begin{subfigure}{0.48\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/training_curve5.png}
+        \caption{Seed 4}
+    \end{subfigure}
+
+    \caption{Enlarged training and validation curves under five different random seeds.}
+    \label{fig:training_curves_seeds_appendix}
+\end{figure}
+
+
+\subsection{Evaluation Metrics}\label{Ealuation_Metrics_Appendix}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\linewidth]{figures/acc.png}
+    \caption{Decision accuracy across five random seeds and baseline methods.}
+    \label{fig:acc_large}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\linewidth]{figures/MF1.png}
+    \caption{Micro-averaged F1 score across different random seeds and baseline methods.}
+    \label{fig:mf1_large}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\linewidth]{figures/DDR.png}
+    \caption{Directional reversal rate (DRR) across random seeds and baseline methods.}
+    \label{fig:ddr_large}
+\end{figure}
+
+\subsection{Confusion Matrices}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\linewidth]{figures/Mseeds.png}
+    \caption{Confusion matrices of the proposed model under five different random seeds.}
+    \label{fig:cm_seeds_large}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\linewidth]{figures/Mmajor.png}
+    \caption{Confusion matrix of the majority-class baseline on the test set.}
+    \label{fig:cm_major_large}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\linewidth]{figures/MRandom.png}
+    \caption{Confusion matrix of the random baseline on the test set.}
+    \label{fig:cm_random_large}
+\end{figure}
 
 \end{document}
